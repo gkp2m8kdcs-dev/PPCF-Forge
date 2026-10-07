@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Support — PPCF Forge</title>
+<meta name="description" content="Get help with PPCF Forge. Contact our support team, browse FAQs, and find quick answers." />
+<style>
+  :root{
+    --accent:#1C7CF3;
+    --accent-2:#7C5CFF;
+    --accent-3:#FF8A3D;
+    --bg:#0B1020;
+    --card:#121A36;
+    --text:#F4F6FB;
+    --muted:#9AA3BF;
+    --line:rgba(255,255,255,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:#7DB6FF;text-decoration:none}
+  a:hover{text-decoration:underline}
+  .container{max-width:1000px;margin:0 auto;padding:0 24px}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(11,16,32,.72);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700}
+  .logo a{color:inherit;text-decoration:none}
+  .logo-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#fff;font-size:14px;font-weight:800}
+  .nav-links{display:flex;gap:22px;font-size:14px;color:var(--muted)}
+  .nav-links a{color:inherit}
+  .nav-links a:hover{color:var(--text);text-decoration:none}
+  .nav-cta{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600}
+
+  /* Hero */
+  .hero{padding:64px 0 32px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:-160px;background:radial-gradient(closest-side,rgba(28,124,243,.22),transparent 60%),radial-gradient(closest-side at 80% 30%,rgba(124,92,255,.2),transparent 60%);pointer-events:none}
+  .hero .container{position:relative}
+  .badge{display:inline-block;background:rgba(124,92,255,.12);color:#B7AEFF;border:1px solid rgba(124,92,255,.3);padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;margin-bottom:14px}
+  h1{font-size:44px;letter-spacing:-1px;font-weight:800;margin-bottom:12px}
+  h1 span{background:linear-gradient(135deg,#7DB6FF,#B7AEFF,#FFB892);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);max-width:600px;margin:0 auto;font-size:16px}
+
+  /* Cards grid */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:48px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;transition:transform .2s ease,border-color .2s ease}
+  .card:hover{transform:translateY(-2px);border-color:rgba(124,92,255,.4)}
+  .card .ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:20px;margin-bottom:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
+  .card h3{font-size:18px;margin-bottom:8px;font-weight:700}
+  .card p{color:var(--muted);font-size:14px;margin-bottom:10px}
+  .card a.btn{display:inline-block;background:rgba(28,124,243,.14);color:#7DB6FF;border:1px solid rgba(28,124,243,.3);padding:8px 14px;border-radius:10px;font-size:13px;font-weight:600;margin-top:6px}
+
+  /* Contact form */
+  .contact-section{padding:60px 0;border-top:1px solid var(--line);margin-top:48px}
+  .contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:36px;align-items:start}
+  .contact-info h2{font-size:28px;letter-spacing:-.4px;margin-bottom:10px;font-weight:800}
+  .contact-info p{color:var(--muted);font-size:15px;margin-bottom:22px}
+  .info-item{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line)}
+  .info-item:first-child{border-top:none}
+  .info-item .ic{width:38px;height:38px;border-radius:10px;background:rgba(28,124,243,.14);color:#7DB6FF;display:grid;place-items:center;font-size:16px;flex-shrink:0}
+  .info-item h4{font-size:14px;font-weight:600;margin-bottom:2px}
+  .info-item p{color:var(--muted);font-size:13px;margin:0}
+
+  form{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  label{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:600}
+  input,textarea,select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:10px;font-family:inherit;font-size:14px;outline:none;transition:border-color .15s ease}
+  input:focus,textarea:focus,select:focus{border-color:rgba(124,92,255,.6)}
+  textarea{min-height:140px;resize:vertical}
+  .form-row{margin-bottom:16px}
+  .submit{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;font-weight:600;border:none;cursor:pointer}
+  .submit:hover{transform:translateY(-1px)}
+
+  /* FAQ */
+  .faq-section{padding:60px 0;border-top:1px solid var(--line)}
+  .faq-section h2{font-size:28px;margin-bottom:8px;font-weight:800}
+  .faq-section .sub{color:var(--muted);font-size:15px;margin-bottom:24px}
+  .faq{display:grid;gap:10px}
+  .faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .faq summary{cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .faq summary::after{content:"+";color:var(--muted);font-size:20px}
+  .faq details[open] summary::after{content:"−"}
+  .faq details p{color:var(--muted);font-size:14px;margin-top:10px}
+  .faq details ol,.faq details ul{margin-top:6px;margin-left:20px;color:var(--muted);font-size:14px}
+
+  footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-size:13px;text-align:center}
+
+  @media (max-width:780px){
+    .contact-grid,.grid{grid-template-columns:1fr}
+    h1{font-size:36px}
+    .nav-links{display:none}
+    .row{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <div class="logo"><span class="logo-mark">P</span><a href="index.html">PPCF Forge</a></div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#features">Features</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+      <a class="nav-cta" href="index.html#download">Download</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <span class="badge">● Support Center</span>
+    <h1>How can we <span>help?</span></h1>
+    <p class="sub">We're here to help you get the most out of PPCF Forge. Browse common questions or send us a message — we usually reply within two business days.</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="ico">📧</div>
+        <h3>Email Support</h3>
+        <p>Send us a detailed message and we'll get back to you personally. Best for account-level issues, feature requests, or bug reports.</p>
+        <a class="btn" href="mailto:a45984849@gmail.com">a45984849@gmail.com</a>
+      </div>
+      <div class="card">
+        <div class="ico">🐛</div>
+        <h3>Report a Bug</h3>
+        <p>Found something that isn't working right? Tell us your iOS version, device model, and steps to reproduce. Screenshots help a lot.</p>
+        <a class="btn" href="mailto:a45984849@gmail.com?subject=Bug%20Report%20-%20PPCF%20Forge">Report a Bug</a>
+      </div>
+      <div class="card">
+        <div class="ico">💡</div>
+        <h3>Request a Feature</h3>
+        <p>Have an idea that would make PPCF Forge better? We read every request and use them to shape the next updates.</p>
+        <a class="btn" href="mailto:a45984849@gmail.com?subject=Feature%20Request%20-%20PPCF%20Forge">Request a Feature</a>
+      </div>
+      <div class="card">
+        <div class="ico">📚</div>
+        <h3>Privacy Questions</h3>
+        <p>Read our privacy policy for the full details on what data we collect (and don't).</p>
+        <a class="btn" href="privacy.html">Read Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <h2>Get in touch</h2>
+      <p>The fastest way to reach our team is by email. We personally read and respond to every message.</p>
+
+      <div class="info-item">
+        <div class="ic">📧</div>
+        <div>
+          <h4>Email</h4>
+          <p><a href="mailto:a45984849@gmail.com">a45984849@gmail.com</a></p>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="ic">⏱️</div>
+        <div>
+          <h4>Response time</h4>
+          <p>Within 2 business days, often sooner.</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="ic">🌐</div>
+        <div>
+          <h4>Languages</h4>
+          <p>English &amp; 中文 (Chinese)</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="ic">🕘</div>
+        <div>
+          <h4>Support hours</h4>
+          <p>Monday – Friday, 09:00 – 18:00 (UTC+8)</p>
+        </div>
+      </div>
+    </div>
+
+    <form action="mailto:a45984849@gmail.com" method="post" enctype="text/plain">
+      <div class="row">
+        <div class="form-row">
+          <label for="name">Your Name</label>
+          <input id="name" name="name" type="text" placeholder="Jane Doe" required />
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="topic">Topic</label>
+        <select id="topic" name="topic">
+          <option>General question</option>
+          <option>Bug report</option>
+          <option>Feature request</option>
+          <option>Privacy concern</option>
+          <option>Refund / purchase issue</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="device">Device &amp; iOS version (optional)</label>
+        <input id="device" name="device" type="text" placeholder="iPhone 15 · iOS 17.4" />
+      </div>
+      <div class="form-row">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Tell us what's going on…" required></textarea>
+      </div>
+      <button class="submit" type="submit">Send Message</button>
+    </form>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <h2>Frequently asked questions</h2>
+    <p class="sub">Quick answers to the most common support questions.</p>
+
+    <div class="faq">
+      <details>
+        <summary>How do I back up my data?</summary>
+        <p>PPCF Forge stores data locally. You have three options:</p>
+        <ol>
+          <li><strong>iCloud Backup</strong> — enable iCloud Backup for your iPhone in <em>Settings → Apple ID → iCloud → Backup</em>. The App's data is included in your encrypted device backup.</li>
+          <li><strong>CSV export</strong> — go to <em>Settings → Export Data</em> to generate CSV files that you can save anywhere (Files, iCloud Drive, email).</li>
+          <li><strong>iCloud Drive</strong> — choose iCloud Drive as the export location to sync the CSV file across your devices.</li>
+        </ol>
+      </details>
+
+      <details>
+        <summary>How do I delete all my data?</summary>
+        <p>Open the App and navigate to <strong>Settings → Data → Erase All Data</strong>. This permanently removes every transaction, receipt, portfolio entry, budget, and goal from your device. The App will return to a fresh-install state.</p>
+        <p>This action cannot be undone. Export first if you want a backup.</p>
+      </details>
+
+      <details>
+        <summary>I lost my data after reinstalling the App. Can you restore it?</summary>
+        <p>Because we do not operate any servers that store user data, we cannot restore data from our side. If you had an iCloud or device backup taken before the reinstall, restoring that backup from your iPhone will bring the data back. CSV exports are also a reliable way to re-import your history.</p>
+      </details>
+
+      <details>
+        <summary>How do I attach a photo receipt to a transaction?</summary>
+        <p>Open any transaction and choose <strong>Add Receipt</strong>. You can either take a new photo with the camera (the App will request permission) or pick one from your photo library. Photos are stored locally on your device.</p>
+      </details>
+
+      <details>
+        <summary>Does the App sync across my devices?</summary>
+        <p>PPCF Forge is a single-device, on-device app by design — it does not sync between devices because that would require a remote service that holds your financial data. If you install the App on another iPhone, you can manually export from one and import the CSV on the other.</p>
+      </details>
+
+      <details>
+        <summary>How do I change the currency?</summary>
+        <p>Go to <strong>Settings → Currency &amp; Region</strong> and pick your preferred currency symbol and decimal format. The change applies across all screens immediately.</p>
+      </details>
+
+      <details>
+        <summary>The charts aren't rendering smoothly. What should I do?</summary>
+        <p>Try the following in order:</p>
+        <ol>
+          <li>Restart the App (swipe up from the app switcher).</li>
+          <li>Restart your iPhone.</li>
+          <li>Make sure your iOS version is 16 or later (<em>Settings → General → Software Update</em>).</li>
+          <li>If the issue persists, send us your device model, iOS version, and a screen recording to <a href="mailto:a45984849@gmail.com">a45984849@gmail.com</a>.</li>
+        </ol>
+      </details>
+
+      <details>
+        <summary>How do I request a refund?</summary>
+        <p>All purchases are processed by Apple. To request a refund, go to <a href="https://reportaproblem.apple.com/">reportaproblem.apple.com</a>, sign in with your Apple ID, find PPCF Forge in your purchase history, and choose <strong>Report a Problem</strong>. Apple handles all refund decisions.</p>
+      </details>
+
+      <details>
+        <summary>How do I delete my account?</summary>
+      <p>PPCF Forge has no account system — there's nothing to delete on our side. To erase all App data, use <em>Settings → Data → Erase All Data</em>, or simply delete the App from your iPhone.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 PPCF Forge · Support: <a href="mailto:a45984849@gmail.com">a45984849@gmail.com</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

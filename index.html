@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PPCF Forge — Private Finance & Wealth Tracker</title>
+<meta name="description" content="PPCF Forge is a fully on-device iPhone finance and wealth tracker. Track transactions, portfolios, savings goals, and photo receipts — all stored privately on your device." />
+<style>
+  :root{
+    --accent:#1C7CF3;
+    --accent-2:#7C5CFF;
+    --accent-3:#FF8A3D;
+    --bg:#0B1020;
+    --bg-2:#0F1730;
+    --card:#121A36;
+    --text:#F4F6FB;
+    --muted:#9AA3BF;
+    --line:rgba(255,255,255,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+  /* NAV */
+  header{position:sticky;top:0;z-index:10;background:rgba(11,16,32,.72);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.3px}
+  .logo-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#fff;font-size:14px;font-weight:800}
+  .nav-links{display:flex;gap:22px;font-size:14px;color:var(--muted)}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600}
+
+  /* HERO */
+  .hero{position:relative;overflow:hidden;padding:80px 0 60px}
+  .hero::before{content:"";position:absolute;inset:-200px;background:radial-gradient(closest-side,rgba(28,124,243,.25),transparent 60%),radial-gradient(closest-side at 80% 30%,rgba(124,92,255,.22),transparent 60%);pointer-events:none}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;position:relative}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(124,92,255,.12);color:#B7AEFF;border:1px solid rgba(124,92,255,.3);padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}
+  .hero h1{font-size:56px;line-height:1.05;letter-spacing:-1px;margin:18px 0 16px;font-weight:800}
+  .hero h1 span{background:linear-gradient(135deg,#7DB6FF,#B7AEFF,#FFB892);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lede{font-size:17px;color:var(--muted);max-width:540px}
+  .cta-row{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:14px;font-weight:600;font-size:15px;border:1px solid transparent;transition:transform .15s ease,box-shadow .2s ease}
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 12px 32px rgba(28,124,243,.32)}
+  .btn-primary:hover{transform:translateY(-1px)}
+  .btn-ghost{background:rgba(255,255,255,.04);color:var(--text);border-color:var(--line)}
+  .meta{display:flex;gap:22px;margin-top:32px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+  .meta b{color:var(--text);font-weight:600}
+
+  /* Phone mock */
+  .phone{position:relative;width:320px;height:640px;margin:0 auto;background:linear-gradient(160deg,#1B2447,#0E1530);border-radius:46px;border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 80px rgba(0,0,0,.55),inset 0 0 0 6px #0A0F22;padding:18px}
+  .notch{width:110px;height:26px;background:#05080F;border-radius:0 0 16px 16px;margin:0 auto 14px}
+  .screen{background:linear-gradient(180deg,#0E1530,#0B1020);height:calc(100% - 40px);border-radius:30px;padding:18px;position:relative;overflow:hidden}
+  .screen .top{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+  .screen h4{margin:14px 0 6px;font-size:13px;color:var(--muted);font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+  .balance{font-size:30px;font-weight:800;letter-spacing:-.5px}
+  .balance .ccy{color:var(--muted);font-size:13px;margin-left:6px}
+  .delta{font-size:12px;color:#5CE0A8;margin-top:4px}
+  .card-row{display:flex;gap:10px;margin-top:14px}
+  .mini{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:10px}
+  .mini .label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .mini .val{font-size:15px;font-weight:700;margin-top:4px}
+  .mini .val.up{color:#5CE0A8}
+  .mini .val.down{color:#FF7A7A}
+  .ring{width:130px;height:130px;margin:18px auto 6px;position:relative}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pct{position:absolute;inset:0;display:grid;place-items:center;font-size:22px;font-weight:800}
+  .list{margin-top:14px}
+  .list-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--line);font-size:12px}
+  .list-item .left{display:flex;align-items:center;gap:10px}
+  .dot{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff}
+  .dot.food{background:#FF8A3D}
+  .dot.trans{background:#1C7CF3}
+  .dot.shop{background:#7C5CFF}
+
+  /* SECTIONS */
+  section{padding:80px 0;border-top:1px solid var(--line)}
+  .section-title{font-size:36px;letter-spacing:-.6px;font-weight:800;margin-bottom:8px}
+  .section-sub{color:var(--muted);max-width:640px;font-size:16px}
+  .center{text-align:center}
+  .center .section-sub{margin:0 auto}
+
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:42px}
+  .feature{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;transition:transform .2s ease,border-color .2s ease}
+  .feature:hover{transform:translateY(-2px);border-color:rgba(124,92,255,.4)}
+  .feature .ico{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-size:20px;margin-bottom:14px}
+  .feature h3{font-size:17px;margin-bottom:6px;font-weight:700}
+  .feature p{color:var(--muted);font-size:14px}
+
+  .flow{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center;margin-top:42px}
+  .flow.reverse{direction:rtl}
+  .flow.reverse > *{direction:ltr}
+  .flow .visual{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;min-height:280px}
+  .flow h3{font-size:24px;margin-bottom:10px;font-weight:700}
+  .flow p{color:var(--muted);font-size:15px}
+
+  /* Bar chart visual */
+  .bars{display:flex;align-items:flex-end;gap:10px;height:200px;margin-top:8px}
+  .bar{flex:1;background:linear-gradient(180deg,var(--accent),var(--accent-2));border-radius:8px 8px 0 0;position:relative}
+  .bar::after{content:attr(data-label);position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--muted)}
+  .axis{height:1px;background:var(--line);margin-top:6px}
+  .legend{display:flex;gap:14px;margin-top:36px;font-size:12px;color:var(--muted)}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
+
+  /* Pie visual */
+  .pie-wrap{display:flex;align-items:center;gap:24px}
+  .pie{width:170px;height:170px;border-radius:50%;background:conic-gradient(#1C7CF3 0 45%,#7C5CFF 45% 70%,#FF8A3D 70% 85%,#5CE0A8 85% 100%);position:relative}
+  .pie::after{content:"";position:absolute;inset:24px;background:var(--card);border-radius:50%}
+  .pie-legend{flex:1;list-style:none}
+  .pie-legend li{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-size:13px}
+  .pie-legend li:first-child{border-top:none}
+  .pie-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px}
+
+  /* Goals */
+  .goals{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+  .goal{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+  .goal h4{font-size:14px;margin-bottom:6px}
+  .goal .pbar{height:8px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;margin:10px 0}
+  .goal .pbar span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+  .goal .meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+
+  /* Privacy */
+  .privacy-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:36px}
+  .pill{display:flex;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+  .pill .check{width:36px;height:36px;border-radius:10px;background:rgba(92,224,168,.12);color:#5CE0A8;display:grid;place-items:center;font-weight:700;flex-shrink:0}
+  .pill h4{font-size:15px;margin-bottom:4px}
+  .pill p{color:var(--muted);font-size:13px}
+
+  /* FAQ */
+  .faq{margin-top:30px;display:grid;gap:10px}
+  .faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .faq summary{cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .faq summary::after{content:"+";color:var(--muted);font-size:20px}
+  .faq details[open] summary::after{content:"−"}
+  .faq details p{color:var(--muted);font-size:14px;margin-top:10px}
+
+  /* CTA */
+  .cta-band{background:linear-gradient(135deg,rgba(28,124,243,.15),rgba(124,92,255,.18));border:1px solid var(--line);border-radius:24px;padding:48px;text-align:center;margin:60px 0}
+  .cta-band h2{font-size:32px;letter-spacing:-.5px;font-weight:800;margin-bottom:10px}
+  .cta-band p{color:var(--muted);max-width:560px;margin:0 auto 22px}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--line);padding:42px 0;color:var(--muted);font-size:13px}
+  .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:24px}
+  .foot h5{color:var(--text);font-size:13px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
+  .foot ul{list-style:none}
+  .foot li{margin-bottom:8px}
+  .foot a:hover{color:var(--text)}
+  .legal{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);margin-top:30px;padding-top:18px;flex-wrap:wrap;gap:10px}
+
+  @media (max-width:880px){
+    .hero-grid,.flow,.privacy-grid,.foot{grid-template-columns:1fr}
+    .hero h1{font-size:42px}
+    .features,.goals{grid-template-columns:1fr 1fr}
+    .nav-links{display:none}
+  }
+  @media (max-width:520px){
+    .features,.goals{grid-template-columns:1fr}
+    .phone{transform:scale(.9)}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <a class="logo" href="index.html">
+        <span class="logo-mark">P</span>
+        PPCF Forge
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#faq">FAQ</a>
+        <a href="support.html">Support</a>
+      </div>
+      <a class="nav-cta" href="#download">Download</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">● Private · On-Device · No Account</span>
+      <h1>Your money,<br/><span>your rules.</span></h1>
+      <p class="lede">PPCF Forge is a private, fully on-device finance and wealth tracker for iPhone. Track every transaction, manage a multi-asset portfolio, build savings goals, attach photo receipts, and visualize your financial life — without ever creating an account.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#download">Download on the App Store</a>
+        <a class="btn btn-ghost" href="#features">Explore Features</a>
+      </div>
+      <div class="meta">
+        <span><b>iOS 16+</b> · iPhone</span>
+        <span><b>100%</b> Local Data</span>
+        <span><b>0</b> Accounts Required</span>
+      </div>
+    </div>
+
+    <!-- Phone mock -->
+    <div class="phone" aria-hidden="true">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="top">
+          <span>9:41</span>
+          <span>● ●●●●●</span>
+        </div>
+        <h4>Total Net Worth</h4>
+        <div class="balance">$84,260<span class="ccy">USD</span></div>
+        <div class="delta">▲ +$1,420 this month</div>
+
+        <div class="card-row">
+          <div class="mini">
+            <div class="label">Income</div>
+            <div class="val up">+$6,240</div>
+          </div>
+          <div class="mini">
+            <div class="label">Spend</div>
+            <div class="val down">−$3,118</div>
+          </div>
+          <div class="mini">
+            <div class="label">Saved</div>
+            <div class="val up">32%</div>
+          </div>
+        </div>
+
+        <div class="ring">
+          <svg width="130" height="130">
+            <circle cx="65" cy="65" r="56" stroke="rgba(255,255,255,.06)" stroke-width="10" fill="none"/>
+            <circle cx="65" cy="65" r="56" stroke="url(#g1)" stroke-width="10" fill="none"
+                    stroke-dasharray="351.86" stroke-dashoffset="105" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="#1C7CF3"/>
+                <stop offset="100%" stop-color="#7C5CFF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="pct">68%</div>
+        </div>
+
+        <div class="list">
+          <div class="list-item">
+            <div class="left"><span class="dot food">F</span>Coffee & Brunch</div>
+            <div>−$18.40</div>
+          </div>
+          <div class="list-item">
+            <div class="left"><span class="dot trans">T</span>Subway Pass</div>
+            <div>−$33.00</div>
+          </div>
+          <div class="list-item">
+            <div class="left"><span class="dot shop">S</span>Online Order</div>
+            <div>−$72.15</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <div class="center">
+      <h2 class="section-title">A complete money command center</h2>
+      <p class="section-sub">Every screen in PPCF Forge is purpose-built for clarity, speed, and a premium feel. Six core modules cover every part of your financial life.</p>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="ico">📊</div>
+        <h3>Interactive Dashboard</h3>
+        <p>Net worth, monthly cash flow, budget progress, and goal momentum — all in one glance, with custom-rendered charts.</p>
+      </div>
+      <div class="feature">
+        <div class="ico">💳</div>
+        <h3>Transactions & Receipts</h3>
+        <p>Log income and expenses in seconds, attach photo receipts, and search by amount, category, or merchant.</p>
+      </div>
+      <div class="feature">
+        <div class="ico">📈</div>
+        <h3>Multi-Asset Portfolio</h3>
+        <p>Track stocks, ETFs, crypto, real estate, and cash holdings with cost basis, gains, and allocation breakdowns.</p>
+      </div>
+      <div class="feature">
+        <div class="ico">🎯</div>
+        <h3>Savings Goals</h3>
+        <p>Set milestones with target amounts and dates. Visualize progress with progress rings and projected completion dates.</p>
+      </div>
+      <div class="feature">
+        <div class="ico">🧾</div>
+        <h3>Budgets That Stick</h3>
+        <p>Build category-based budgets, see how pacing shifts over the month, and get gentle warnings before you overspend.</p>
+      </div>
+      <div class="feature">
+        <div class="ico">📉</div>
+        <h3>Analytics & Trends</h3>
+        <p>Month-over-month comparisons, category breakdowns, and line charts that reveal the story behind your spending.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW 1: Charts -->
+<section>
+  <div class="container flow">
+    <div>
+      <h3>Custom-rendered charts that feel alive</h3>
+      <p>Every chart — bars, lines, pies, and progress rings — is drawn natively for buttery-smooth interaction. No web views, no lag. Trends and categories update instantly as you log new activity.</p>
+      <div class="legend">
+        <span><i style="background:#1C7CF3"></i>Income</span>
+        <span><i style="background:#7C5CFF"></i>Savings</span>
+        <span><i style="background:#FF8A3D"></i>Spend</span>
+      </div>
+    </div>
+    <div class="visual">
+      <div class="bars">
+        <div class="bar" style="height:55%" data-label="Jan"></div>
+        <div class="bar" style="height:72%" data-label="Feb"></div>
+        <div class="bar" style="height:48%" data-label="Mar"></div>
+        <div class="bar" style="height:90%" data-label="Apr"></div>
+        <div class="bar" style="height:66%" data-label="May"></div>
+        <div class="bar" style="height:82%" data-label="Jun"></div>
+        <div class="bar" style="height:76%" data-label="Jul"></div>
+      </div>
+      <div class="axis" style="margin-top:30px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW 2: Categories -->
+<section>
+  <div class="container flow reverse">
+    <div>
+      <h3>See exactly where every dollar goes</h3>
+      <p>Tap any category to drill down. Sub-category breakdowns, month-over-month deltas, and merchant-level detail turn raw numbers into a clear spending narrative.</p>
+    </div>
+    <div class="visual">
+      <div class="pie-wrap">
+        <div class="pie"></div>
+        <ul class="pie-legend">
+          <li><span><i style="background:#1C7CF3"></i>Housing</span><span>45%</span></li>
+          <li><span><i style="background:#7C5CFF"></i>Food</span><span>25%</span></li>
+          <li><span><i style="background:#FF8A3D"></i>Transport</span><span>15%</span></li>
+          <li><span><i style="background:#5CE0A8"></i>Other</span><span>15%</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOALS -->
+<section>
+  <div class="container">
+    <div class="center">
+      <h2 class="section-title">Hit the milestones that matter</h2>
+      <p class="section-sub">Turn vague intentions into a tracked, visual journey toward the goals you care about.</p>
+    </div>
+
+    <div class="goals">
+      <div class="goal">
+        <h4>Emergency Fund</h4>
+        <div class="meta"><span>$6,800 / $10,000</span><span>68%</span></div>
+        <div class="pbar"><span style="width:68%"></span></div>
+        <div class="meta"><span>Target: Dec 2026</span><span>On track</span></div>
+      </div>
+      <div class="goal">
+        <h4>Tokyo Trip</h4>
+        <div class="meta"><span>$2,400 / $5,000</span><span>48%</span></div>
+        <div class="pbar"><span style="width:48%"></span></div>
+        <div class="meta"><span>Target: Mar 2027</span><span>+12 days</span></div>
+      </div>
+      <div class="goal">
+        <h4>New MacBook</h4>
+        <div class="meta"><span>$1,150 / $2,800</span><span>41%</span></div>
+        <div class="pbar"><span style="width:41%"></span></div>
+        <div class="meta"><span>Target: Aug 2027</span><span>On track</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section id="privacy">
+  <div class="container">
+    <div class="center">
+      <h2 class="section-title">Privacy isn't a feature. It's the whole product.</h2>
+      <p class="section-sub">PPCF Forge is built around one principle: your financial data belongs to you, and only to you.</p>
+    </div>
+
+    <div class="privacy-grid">
+      <div class="pill">
+        <div class="check">✓</div>
+        <div>
+          <h4>Fully on-device storage</h4>
+          <p>Every transaction, receipt, and portfolio entry is stored in a local SQLite database on your iPhone. We don't have servers that store your data.</p>
+        </div>
+      </div>
+      <div class="pill">
+        <div class="check">✓</div>
+        <div>
+          <h4>No account, no sign-up</h4>
+          <p>Open the app and you're in. We don't collect your email, name, phone, or any identifier to use PPCF Forge.</p>
+        </div>
+      </div>
+      <div class="pill">
+        <div class="check">✓</div>
+        <div>
+          <h4>No analytics or tracking SDKs</h4>
+          <p>The app does not contain third-party analytics, ad networks, or tracking SDKs. There is no behavioral telemetry leaving your device.</p>
+        </div>
+      </div>
+      <div class="pill">
+        <div class="check">✓</div>
+        <div>
+          <h4>You control your data</h4>
+          <p>Export everything as CSV any time. Clear all data with a single tap. Backups are stored only where you choose — iCloud Drive, Files, or email.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="center">
+      <h2 class="section-title">Frequently asked questions</h2>
+      <p class="section-sub">Quick answers to common questions about PPCF Forge.</p>
+    </div>
+
+    <div class="faq">
+      <details>
+        <summary>Does PPCF Forge require an account?</summary>
+        <p>No. There is no sign-up, no login, and no account of any kind. You install the app and start tracking immediately.</p>
+      </details>
+      <details>
+        <summary>Where is my financial data stored?</summary>
+        <p>All data is stored locally on your iPhone in an on-device database. Photos you attach to receipts are saved to your photo library or the app's secure local storage. We do not operate servers that receive your financial data.</p>
+      </details>
+      <details>
+        <summary>Can I export my data?</summary>
+        <p>Yes. You can export all transactions, budgets, and portfolio entries as CSV files at any time from the Settings screen.</p>
+      </details>
+      <details>
+        <summary>Does PPCF Forge connect to my bank?</summary>
+        <p>No. PPCF Forge is a manual tracker by design. There are no bank-linking features, no credentials to enter, and no third-party data feeds.</p>
+      </details>
+      <details>
+        <summary>How do I contact support?</summary>
+        <p>Email us at <a href="mailto:a45984849@gmail.com">a45984849@gmail.com</a> or visit the <a href="support.html">Support</a> page. We reply within two business days.</p>
+      </details>
+      <details>
+        <summary>What iOS version is required?</summary>
+        <p>PPCF Forge requires iOS 16 or later on iPhone.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="download">
+  <div class="container">
+    <div class="cta-band">
+      <h2>Take control of your money today</h2>
+      <p>Download PPCF Forge and turn raw spending into a clear story of your wealth — privately, beautifully, and entirely on your terms.</p>
+      <a class="btn btn-primary" href="#">Download on the App Store</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot">
+      <div>
+        <div class="logo" style="margin-bottom:10px">
+          <span class="logo-mark">P</span> PPCF Forge
+        </div>
+        <p>A private, on-device finance and wealth tracker for iPhone. Your money, your rules.</p>
+      </div>
+      <div>
+        <h5>Product</h5>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Support</h5>
+        <ul>
+          <li><a href="support.html">Support</a></li>
+          <li><a href="mailto:a45984849@gmail.com">Contact</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 PPCF Forge. All rights reserved.</span>
+      <span>Support: <a href="mailto:a45984849@gmail.com">a45984849@gmail.com</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
